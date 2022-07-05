@@ -1,5 +1,6 @@
 package com.simonesolita.oiltracker.di
 
+import com.google.gson.Gson
 import com.simonesolita.oiltracker.retrofit.APIConstants
 import com.simonesolita.oiltracker.retrofit.OilInfoAPI
 import dagger.Module
@@ -7,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
@@ -24,6 +26,6 @@ object OilInfoAPIModule {
     @Singleton
     fun provideRetrofit(): Retrofit.Builder {
         return Retrofit.Builder().baseUrl(APIConstants.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
     }
 }

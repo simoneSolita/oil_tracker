@@ -17,5 +17,6 @@ class MainActivityViewModel @Inject constructor(
 
     fun onCorrectLoading() {
         correctLoading = true
+        correctDownload = true
     }
 }

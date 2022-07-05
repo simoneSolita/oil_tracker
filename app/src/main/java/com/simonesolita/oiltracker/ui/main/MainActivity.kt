@@ -2,9 +2,9 @@ package com.simonesolita.oiltracker.ui.main
 
 import android.os.Bundle
 import android.view.animation.OvershootInterpolator
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -28,14 +28,22 @@ import androidx.navigation.compose.rememberNavController
 import com.simonesolita.oiltracker.R
 import com.simonesolita.oiltracker.navigation.Screen
 import com.simonesolita.oiltracker.navigation.setupNavGraph
+import com.simonesolita.oiltracker.ui.graph.GraphViewModel
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.components.ActivityComponent
 import kotlinx.coroutines.delay
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
     private val viewModel: MainActivityViewModel by viewModels()
+
+    @EntryPoint
+    @InstallIn(ActivityComponent::class)
+    interface ViewModelFactoryProvider {
+        fun graphViewModelFactory(): GraphViewModel.Factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

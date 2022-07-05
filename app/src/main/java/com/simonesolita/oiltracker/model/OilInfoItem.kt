@@ -1,6 +1,11 @@
 package com.simonesolita.oiltracker.model
 
+import com.google.gson.annotations.SerializedName
+
 data class OilInfoItem (
-    val Date: String,
-    val Price: Double
+    @SerializedName("Date")
+    val date: String,
+
+    @SerializedName("Price")
+    val price: Double
 )
