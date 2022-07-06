@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Oil Tracker</string>
     <string name="graph_oil_info">Informazioni</string>
+    <string name="select_date_from">Data da:</string>
+    <string name="select_date_to">Data A:</string>
+    <string name="no_data_for_filter">Nessun dato per le date selezionate</string>
+    <string name="data">Data: %s</string>
+    <string name="price">Prezzo: %s</string>
 </resources>

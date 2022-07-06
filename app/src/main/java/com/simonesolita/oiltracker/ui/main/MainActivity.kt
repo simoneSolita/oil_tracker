@@ -110,7 +110,7 @@ fun SplashScreen(
         )
     }
 
-    if (viewModel.correctDownload) {
+    if (viewModel.correctLoading) {
         DisposableEffect(key1 = true) {
             navController.navigate(Screen.Graph.route) {
                 popUpTo(Screen.Splash.route) {

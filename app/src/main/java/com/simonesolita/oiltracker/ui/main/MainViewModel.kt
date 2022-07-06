@@ -12,11 +12,8 @@ class MainActivityViewModel @Inject constructor(
 ) : ViewModel() {
     //error
     var correctLoading: Boolean by mutableStateOf(false)
-    var correctDownload: Boolean by mutableStateOf(false)
-    var errorDownload: Boolean by mutableStateOf(false)
 
     fun onCorrectLoading() {
         correctLoading = true
-        correctDownload = true
     }
 }

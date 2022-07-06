@@ -30,7 +30,6 @@ fun setupNavGraph(
             route = Screen.Graph.route
         ) {
             GraphScreen(
-                navController = navController,
             )
         }
     }
