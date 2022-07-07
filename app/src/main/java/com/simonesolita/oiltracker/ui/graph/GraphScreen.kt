@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.simonesolita.oiltracker.R
 import com.simonesolita.oiltracker.model.OilInfoItem
 import com.simonesolita.oiltracker.ui.components.LineChart
+import com.simonesolita.oiltracker.ui.components.LineGraph
 import com.simonesolita.oiltracker.ui.components.SingleOilInfo
 import com.simonesolita.oiltracker.ui.components.createDatePicker
 import com.simonesolita.oiltracker.ui.main.MainActivity
@@ -139,13 +140,14 @@ fun OilInfosContent(
     state: List<OilInfoItem>
 ) {
     FormRow(title = stringResource(id = R.string.graph_content)) {
-        LineChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(6.dp),
-            oilInfos = state
-        )
+//        LineChart(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp)
+//                .padding(6.dp),
+//            oilInfos = state
+//        )
+        LineGraph(state)
     }
     FormRow(title = stringResource(id = R.string.card_first_day)) {
         SingleOilInfo(state.first())

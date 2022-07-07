@@ -93,11 +93,9 @@ class GraphViewModel @AssistedInject constructor(
     }
 
     fun filterOilInfos() {
-        //assign to _state a copy of json content
-        val tmpOilInfos = oilInfos
         //filter and assign
         _state.value =
-            tmpOilInfos.filter(buildDatePredicate(fromDate.toLocalDate(), toDate.toLocalDate()))
+            oilInfos.filter(buildDatePredicate(fromDate.toLocalDate(), toDate.toLocalDate()))
     }
 
 }
