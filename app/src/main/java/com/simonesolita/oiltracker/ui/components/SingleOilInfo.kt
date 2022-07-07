@@ -1,6 +1,8 @@
 package com.simonesolita.oiltracker.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -12,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simonesolita.oiltracker.R
 import com.simonesolita.oiltracker.model.OilInfoItem
-import com.simonesolita.oiltracker.utils.toLocalDate
+import com.simonesolita.oiltracker.utils.toFormattedString
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
@@ -20,7 +22,9 @@ import java.util.*
 fun SingleOilInfo(
     oilInfo: OilInfoItem,
 ) {
-    val paddingModifier = Modifier.padding(10.dp).fillMaxWidth()
+    val paddingModifier = Modifier
+        .padding(10.dp)
+        .fillMaxWidth()
 
     Card(
         modifier = paddingModifier,
@@ -29,12 +33,18 @@ fun SingleOilInfo(
     ) {
         Column(modifier = paddingModifier) {
             Text(
-                text = String.format(stringResource(id = R.string.card_data), oilInfo.date.toString()),
+                text = String.format(
+                    stringResource(id = R.string.card_data),
+                    oilInfo.date.toFormattedString()
+                ),
                 style = MaterialTheme.typography.h5
             )
 
             Text(
-                text = String.format(stringResource(id = R.string.card_price), oilInfo.price.toString()),
+                text = String.format(
+                    stringResource(id = R.string.card_price),
+                    oilInfo.price.toString()
+                ),
                 style = MaterialTheme.typography.h5
             )
         }
@@ -45,5 +55,5 @@ fun SingleOilInfo(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 private fun SingleOilInfoPreview() {
-    SingleOilInfo(OilInfoItem(Date().toLocalDate(), 18.2))
+    SingleOilInfo(OilInfoItem(0, Date(), 18.2))
 }

@@ -8,9 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.simonesolita.oiltracker.model.OilInfoItem
 import com.simonesolita.oiltracker.repositories.OilInfoRepository
-import com.simonesolita.oiltracker.utils.buildDatePredicate
-import com.simonesolita.oiltracker.utils.toDate
-import com.simonesolita.oiltracker.utils.toLocalDate
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,16 +25,13 @@ class GraphViewModel @AssistedInject constructor(
         ): GraphViewModel
     }
 
-    var oilInfos: List<OilInfoItem> = emptyList()
+    var oilInfos = emptyList<OilInfoItem>()
 
     var fromDate by mutableStateOf(Date())
     var toDate by mutableStateOf(Date())
 
     var maxFromDate by mutableStateOf(Date())
     var maxToDate by mutableStateOf(Date())
-
-    var isDownloading: Boolean by mutableStateOf(true)
-    var isErrorDownload: Boolean by mutableStateOf(false)
 
     @Suppress("UNCHECKED_CAST")
     companion object {
@@ -54,50 +48,38 @@ class GraphViewModel @AssistedInject constructor(
     val state: StateFlow<List<OilInfoItem>>
         get() = _state
 
+
     init {
         viewModelScope.launch {
-            //download json
-            try {
-                val oilInfo = oilInfoRepository.downloadOilInfo()
-                isDownloading = false
 
-                //assign to a variable the json content
-                oilInfos = oilInfo
+            //get all infos
+            oilInfos = oilInfoRepository.getOilInfosByRange(null,null)
 
-                //initialize datepickers to first and last day possible
-                fromDate = oilInfos.first().date.toDate()
-                toDate = oilInfos.last().date.toDate()
+            //initialize datepickers to first and last day possible
+            fromDate = oilInfos.first().date
+            toDate = oilInfos.last().date
 
-                //saving max and min date selectable in datepickers
-                maxFromDate = fromDate
-                maxToDate = toDate
+            //saving max and min date selectable in datepickers
+            maxFromDate = fromDate
+            maxToDate = toDate
 
-                //filter using datepicker values
-                filterOilInfos()
-            }catch (ex : Exception){
-                println(ex.localizedMessage)
-                isDownloading = false
-                isErrorDownload = true
-            }
+            _state.value = oilInfos
         }
     }
 
     fun selectedFromDate(date: Date) {
         fromDate = date
-        filterOilInfos()
+        recalculateOilInfos()
     }
 
     fun selectedToDate(date: Date) {
         toDate = date
-        filterOilInfos()
+        recalculateOilInfos()
     }
 
-    fun filterOilInfos() {
-        //assign to _state a copy of json content
-        val tmpOilInfos = oilInfos
-        //filter and assign
-        _state.value =
-            tmpOilInfos.filter(buildDatePredicate(fromDate.toLocalDate(), toDate.toLocalDate()))
+    fun recalculateOilInfos(){
+        oilInfos = oilInfoRepository.getOilInfosByRange(fromDate,toDate)
+        _state.value = oilInfos
     }
 
 }

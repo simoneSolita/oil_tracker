@@ -10,6 +10,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -22,12 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.simonesolita.oiltracker.R
 import com.simonesolita.oiltracker.navigation.Screen
 import com.simonesolita.oiltracker.navigation.setupNavGraph
+import com.simonesolita.oiltracker.ui.components.InfoContent
 import com.simonesolita.oiltracker.ui.graph.GraphViewModel
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -110,7 +114,15 @@ fun SplashScreen(
         )
     }
 
-    if (viewModel.correctLoading) {
+    if (!viewModel.correctLoading){
+        CircularProgressIndicator(
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(align = Alignment.BottomCenter)
+        )
+    }
+
+    if (viewModel.correctDownload) {
         DisposableEffect(key1 = true) {
             navController.navigate(Screen.Graph.route) {
                 popUpTo(Screen.Splash.route) {
@@ -122,5 +134,11 @@ fun SplashScreen(
             onDispose {
             }
         }
+    }
+
+    if (viewModel.errorDownload){
+        InfoContent(
+            message = stringResource(id = R.string.error_download)
+        )
     }
 }

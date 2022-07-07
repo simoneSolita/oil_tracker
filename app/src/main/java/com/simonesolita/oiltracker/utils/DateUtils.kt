@@ -1,8 +1,6 @@
 package com.simonesolita.oiltracker.utils
 
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 
 data class Time(
@@ -37,27 +35,7 @@ fun Date.toCalendar() : Time
     )
 }
 
-fun Date.toLocalDate() : LocalDate
-{
-    val calendar = Calendar.getInstance()
-    calendar.time = this
-
-    return LocalDate.parse(this.toFormattedString())
-}
-
 fun Date.toFormattedString(format : String = "yyyy-MM-dd") : String
 {
     return SimpleDateFormat(format, Locale.getDefault()).format(this)
-}
-
-fun LocalDate.toDate() : Date {
-    return Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())
-}
-
-fun LocalDate.removeOneDay() : LocalDate {
-    return this.minusDays(1)
-}
-
-fun LocalDate.addOneDay() : LocalDate {
-    return this.plusDays(1)
 }

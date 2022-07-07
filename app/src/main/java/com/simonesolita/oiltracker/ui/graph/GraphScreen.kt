@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.simonesolita.oiltracker.R
 import com.simonesolita.oiltracker.model.OilInfoItem
+import com.simonesolita.oiltracker.ui.components.InfoContent
 import com.simonesolita.oiltracker.ui.components.LineChart
 import com.simonesolita.oiltracker.ui.components.SingleOilInfo
 import com.simonesolita.oiltracker.ui.components.createDatePicker
@@ -70,65 +71,51 @@ fun GraphContent(
 ) {
     val viewModel = graphScreenViewModel()
     val state by viewModel.state.collectAsState()
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        Spacer(modifier = Modifier.height(12.dp))
 
-    if (viewModel.isDownloading) {
-        CircularProgressIndicator(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(align = Alignment.Center)
+        DatePicker(
+            title = stringResource(id = R.string.select_date_from),
+            placeholder = stringResource(id = R.string.select_date_from),
+            value = fromDate.toFormattedString(),
+            actualDate = fromDate,
+            currentMinDate = maxFromDate,
+            currentMaxDate = toDate,
+            onValueChange = { onFromDateChange(it) })
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        DatePicker(
+            title = stringResource(id = R.string.select_date_to),
+            placeholder = stringResource(id = R.string.select_date_to),
+            value = toDate.toFormattedString(),
+            actualDate = toDate,
+            currentMinDate = fromDate,
+            currentMaxDate = maxToDate,
+            onValueChange = { onToDateChange(it) }
         )
-    } else {
-        if (viewModel.isErrorDownload) {
-            InfoContent(
-                message = stringResource(id = R.string.error_download)
-            )
-        } else {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Spacer(modifier = Modifier.height(12.dp))
 
-                DatePicker(
-                    title = stringResource(id = R.string.select_date_from),
-                    placeholder = stringResource(id = R.string.select_date_from),
-                    value = fromDate.toFormattedString(),
-                    actualDate = fromDate,
-                    currentMinDate = maxFromDate,
-                    currentMaxDate = toDate,
-                    onValueChange = { onFromDateChange(it) })
+        Spacer(modifier = Modifier.height(12.dp))
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                DatePicker(
-                    title = stringResource(id = R.string.select_date_to),
-                    placeholder = stringResource(id = R.string.select_date_to),
-                    value = toDate.toFormattedString(),
-                    actualDate = toDate,
-                    currentMinDate = fromDate,
-                    currentMaxDate = maxToDate,
-                    onValueChange = { onToDateChange(it) }
+        when {
+            state.isEmpty() -> {
+                InfoContent(
+                    message = stringResource(id = R.string.no_data_for_filter)
                 )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                when {
-                    state.isEmpty() -> {
-                        InfoContent(
-                            message = stringResource(id = R.string.no_data_for_filter)
-                        )
-                    }
-                    state.size == 1 -> {
-                        FormRow(
-                            title = stringResource(id = R.string.price_single_day)) {
-                            SingleOilInfo(state.first())
-                        }
-
-                    }
-                    else -> {
-                        OilInfosContent(state = state)
-                    }
+            }
+            state.size == 1 -> {
+                FormRow(
+                    title = stringResource(id = R.string.price_single_day)
+                ) {
+                    SingleOilInfo(state.first())
                 }
+
+            }
+            else -> {
+                OilInfosContent(state = state)
             }
         }
     }
@@ -224,23 +211,6 @@ fun DatePicker(
                     )
                 }
             }
-        )
-    }
-}
-
-@Composable
-fun InfoContent(
-    message: String
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            text = message,
-            color = Color.Blue,
-            fontSize = MaterialTheme.typography.h3.fontSize,
-            fontWeight = FontWeight.Bold
         )
     }
 }
