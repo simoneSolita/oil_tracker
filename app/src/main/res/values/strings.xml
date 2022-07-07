@@ -4,6 +4,13 @@
     <string name="select_date_from">Data da:</string>
     <string name="select_date_to">Data A:</string>
     <string name="no_data_for_filter">Nessun dato per le date selezionate</string>
-    <string name="data">Data: %s</string>
-    <string name="price">Prezzo: %s</string>
+    <string name="card_data">Data: %s</string>
+    <string name="card_price">Prezzo: %s</string>
+    <string name="price_single_day">Prezzo giorno selezionato:</string>
+    <string name="graph_content">Grafico prezzi per il periodo selezionato:</string>
+    <string name="card_first_day">Prezzo partenza:</string>
+    <string name="card_last_day">Prezzo finale:</string>
+    <string name="card_max_price">Prezzo maggiore:</string>
+    <string name="card_low_price">Prezzo minore:</string>
+    <string name="error_download">Errore nel recupero dei dati.\nControlla di essere connesso ad internet e riprova!</string>
 </resources>

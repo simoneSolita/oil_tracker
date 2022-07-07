@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Singleton
 
 class GraphViewModel @AssistedInject constructor(
     private val oilInfoRepository: OilInfoRepository
@@ -38,6 +37,7 @@ class GraphViewModel @AssistedInject constructor(
     var maxToDate by mutableStateOf(Date())
 
     var isDownloading: Boolean by mutableStateOf(true)
+    var isErrorDownload: Boolean by mutableStateOf(false)
 
     @Suppress("UNCHECKED_CAST")
     companion object {
@@ -57,23 +57,28 @@ class GraphViewModel @AssistedInject constructor(
     init {
         viewModelScope.launch {
             //download json
-            val oilInfo = oilInfoRepository.downloadOilInfo()
+            try {
+                val oilInfo = oilInfoRepository.downloadOilInfo()
+                isDownloading = false
 
-            isDownloading = false
+                //assign to a variable the json content
+                oilInfos = oilInfo
 
-            //assign to a variable the json content
-            oilInfos = oilInfo
+                //initialize datepickers to first and last day possible
+                fromDate = oilInfos.first().date.toDate()
+                toDate = oilInfos.last().date.toDate()
 
-            //initialize datepickers to first and last day possible
-            fromDate = oilInfos.first().date.toDate()
-            toDate = oilInfos.last().date.toDate()
+                //saving max and min date selectable in datepickers
+                maxFromDate = fromDate
+                maxToDate = toDate
 
-            //saving max and min date selectable in datepickers
-            maxFromDate = fromDate
-            maxToDate = toDate
-
-            //filter using datepicker values
-            filterOilInfos()
+                //filter using datepicker values
+                filterOilInfos()
+            }catch (ex : Exception){
+                println(ex.localizedMessage)
+                isDownloading = false
+                isErrorDownload = true
+            }
         }
     }
 

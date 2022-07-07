@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
 import com.simonesolita.oiltracker.model.OilInfoItem
+import com.simonesolita.oiltracker.utils.getMaxOilPrice
 
 @Composable
 fun LineChart(
@@ -70,11 +71,4 @@ private fun calculateYCoordinate(
         return maxAndCurrentValueDifference * relativePercentageOfScreen
     }
     return Float.NaN
-}
-
-private fun getMaxOilPrice(
-    oilInfos: List<OilInfoItem>
-): Double? {
-    val arrayPrices = oilInfos.map { it.price }.toTypedArray()
-    return arrayPrices.maxOrNull()
 }

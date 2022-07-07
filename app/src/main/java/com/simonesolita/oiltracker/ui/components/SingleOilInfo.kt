@@ -29,13 +29,13 @@ fun SingleOilInfo(
     ) {
         Column(modifier = paddingModifier) {
             Text(
-                text = String.format(stringResource(id = R.string.data), oilInfo.date.toString()),
-                style = MaterialTheme.typography.h4
+                text = String.format(stringResource(id = R.string.card_data), oilInfo.date.toString()),
+                style = MaterialTheme.typography.h5
             )
 
             Text(
-                text = String.format(stringResource(id = R.string.price), oilInfo.price.toString()),
-                style = MaterialTheme.typography.h4
+                text = String.format(stringResource(id = R.string.card_price), oilInfo.price.toString()),
+                style = MaterialTheme.typography.h5
             )
         }
     }
